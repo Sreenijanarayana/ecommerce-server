@@ -19,48 +19,50 @@ import jakarta.servlet.http.HttpServletRequest;
 @Configuration
 public class Appconfig {
 
-	@SuppressWarnings("removal")
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-		.authorizeHttpRequests(Authorize -> Authorize.requestMatchers("/auth*").authenticated().anyRequest().permitAll())
-		//.addFilterBefore(null, null)	
-		.csrf().disable()
-		.cors().configurationSource(new CorsConfigurationSource() {
-		
-			@Override
-			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-				
-				CorsConfiguration cfg = new CorsConfiguration();
-				cfg.setAllowedOrigins(Arrays.asList(
-						"http://localhost:3000/",
-						"http://localhost:4200/",
-						"https://shop-ecommerce-azure.vercel.app/",
-						"https://shop-ecommerce-azure.vercel.app",
-						"https://shop-ecommerce-git-master-sreenijanarayanas-projects.vercel.app/",
-						"https://shop-ecommerce-sreenijanarayanas-projects.vercel.app/"
-						));
-				cfg.setAllowedMethods(Collections.singletonList("*"));
-				cfg.setAllowCredentials(true);
-				cfg.setAllowedHeaders(Collections.singletonList("*"));
-				cfg.setExposedHeaders(Arrays.asList("Authorization"));
-				cfg.setMaxAge(3600L);
-				
-				return cfg;
-			}
-		})
-		.and()
-		.httpBasic(Customizer.withDefaults())// 
-		
-		.formLogin();
-		return http.build();
-	}
-	
-	  @Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();// to hash password and to encode it
-	}
-	
+    @SuppressWarnings("removal")
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Stateless session
+        .and()
+        .authorizeHttpRequests(Authorize -> Authorize
+            .requestMatchers("/auth/**").permitAll()  // Allow unauthenticated access to /auth endpoints
+            .anyRequest().authenticated())  // Require authentication for other requests
+        .csrf().disable()  // Disable CSRF (important for stateless JWT-based apps)
+        .cors().configurationSource(new CorsConfigurationSource() {
+
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                
+                CorsConfiguration cfg = new CorsConfiguration();
+                
+                // Allow multiple origins
+                cfg.setAllowedOrigins(Arrays.asList(
+                    "http://localhost:3000",  // React app (development)
+                    "http://localhost:4200",  // Angular app (development)
+                    "https://shop-ecommerce-azure.vercel.app",  // Main deployed frontend
+                    "https://shop-ecommerce-git-master-sreenijanarayanas-projects.vercel.app",  // Another deployed version
+                    "https://shop-ecommerce-sreenijanarayanas-projects.vercel.app"  // Another version
+                ));
+                
+                cfg.setAllowedMethods(Collections.singletonList("*"));  // Allow all methods (GET, POST, etc.)
+                cfg.setAllowedHeaders(Collections.singletonList("*"));  // Allow all headers
+                cfg.setAllowCredentials(true);  // Allow credentials (cookies, auth headers)
+                cfg.setExposedHeaders(Arrays.asList("Authorization"));  // Expose Authorization header for frontend access
+                cfg.setMaxAge(3600L);  // Cache the CORS configuration for 1 hour
+                
+                return cfg;
+            }
+        })
+        .and()
+        .httpBasic(Customizer.withDefaults())  // Basic HTTP security configuration
+        .formLogin();  // Default form login (if required for other parts of the app)
+        
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();  // To hash and encode passwords
+    }
 }
