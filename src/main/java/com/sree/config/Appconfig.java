@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,7 +27,8 @@ public class Appconfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Stateless session
         .and()
         .authorizeHttpRequests(Authorize -> Authorize
-            .requestMatchers("/auth/**").permitAll()  // Allow unauthenticated access to /auth endpoints
+            .requestMatchers("/auth/**").permitAll() 
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow unauthenticated access to /auth endpoints
             .anyRequest().authenticated())  // Require authentication for other requests
         .csrf().disable()  // Disable CSRF (important for stateless JWT-based apps)
         .cors().configurationSource(new CorsConfigurationSource() {
@@ -45,12 +47,12 @@ public class Appconfig {
                     "https://shop-ecommerce-sreenijanarayanas-projects.vercel.app"  // Another version
                 ));
                 
-                cfg.setAllowedMethods(Collections.singletonList("*"));  // Allow all methods (GET, POST, etc.)
+               // cfg.setAllowedMethods(Collections.singletonList("*"));  // Allow all methods (GET, POST, etc.)
                 cfg.setAllowedHeaders(Collections.singletonList("*"));  // Allow all headers
                 cfg.setAllowCredentials(true);  // Allow credentials (cookies, auth headers)
                 cfg.setExposedHeaders(Arrays.asList("Authorization"));  // Expose Authorization header for frontend access
                 cfg.setMaxAge(3600L);  // Cache the CORS configuration for 1 hour
-                
+                cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); 
                 return cfg;
             }
         })
