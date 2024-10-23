@@ -152,6 +152,12 @@ public class User {
 		this.createdAt = createdAt;
 	}
 
+	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+    
 	public User(Long id, String firstName, String lastName, String password, String email, String role, String mobile,
 			List<Address> addresses, List<PaymentInformation> paymentInformation, List<Rating> ratings,
 			List<Review> reviews, LocalDateTime createdAt) {
@@ -170,11 +176,7 @@ public class User {
 		this.createdAt = createdAt;
 	}
 
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-    
+	
     
 
     
