@@ -34,9 +34,14 @@ public class Appconfig {
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 				
 				CorsConfiguration cfg = new CorsConfiguration();
-				cfg.setAllowedOrigins(Arrays.asList("http://localhost:3000/",
+				cfg.setAllowedOrigins(Arrays.asList(
+						"http://localhost:3000/",
 						"http://localhost:4200/",
-						"https://shop-ecommerce-azure.vercel.app/"));
+						"https://shop-ecommerce-azure.vercel.app/",
+						"https://shop-ecommerce-azure.vercel.app",
+						"https://shop-ecommerce-git-master-sreenijanarayanas-projects.vercel.app/",
+						"https://shop-ecommerce-sreenijanarayanas-projects.vercel.app/"
+						));
 				cfg.setAllowedMethods(Collections.singletonList("*"));
 				cfg.setAllowCredentials(true);
 				cfg.setAllowedHeaders(Collections.singletonList("*"));
