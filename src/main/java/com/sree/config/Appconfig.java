@@ -44,12 +44,7 @@ public class Appconfig {
                     "http://localhost:4200",  // Angular app (development)
                     "https://shop-ecommerce-azure.vercel.app",  // Main deployed frontend
                     "https://shop-ecommerce-git-master-sreenijanarayanas-projects.vercel.app",  // Another deployed version
-                    "https://shop-ecommerce-sreenijanarayanas-projects.vercel.app",  // Another version
-                    "http://localhost:3000/",  // React app (development)
-                    "http://localhost:4200/",  // Angular app (development)
-                    "https://shop-ecommerce-azure.vercel.app/",  // Main deployed frontend
-                    "https://shop-ecommerce-git-master-sreenijanarayanas-projects.vercel.app/",  // Another deployed version
-                    "https://shop-ecommerce-sreenijanarayanas-projects.vercel.app/"  // Another version
+                    "https://shop-ecommerce-sreenijanarayanas-projects.vercel.app"  // Another version
                 ));
                 
                // cfg.setAllowedMethods(Collections.singletonList("*"));  // Allow all methods (GET, POST, etc.)
